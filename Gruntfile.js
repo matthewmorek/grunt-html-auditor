@@ -15,8 +15,7 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js',
-        '<%= nodeunit.tests %>'
+        'tasks/**/*.js'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -29,22 +28,22 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    html_auditor: {
+    htmlaudit: {
       default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+        options: {},
+        src: 'test/fixtures/*.html'
       },
       custom_options: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
+          tests: {
+            a11y: true,
+            html5: true,
+            link: true
+          },
+          report: false,
+          debug: false
         },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
+        src: 'test/fixtures/*.html'
       }
     },
 
@@ -65,7 +64,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'html_auditor', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'htmlaudit', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
