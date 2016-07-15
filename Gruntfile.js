@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             html5: true,
             link: true
           },
-          report: false,
+          summary: true,
           debug: false
         },
         src: 'test/fixtures/*.html'

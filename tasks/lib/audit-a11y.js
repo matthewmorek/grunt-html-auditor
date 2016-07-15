@@ -77,7 +77,7 @@ module.exports = function (data, done) {
             count.notices++;
             break;
         }
-        if (data.options.summary) {
+        if (!data.options.summary) {
           data.grunt.log.writeln(chalk.white.bold('Code: ') + item.code);
           data.grunt.log.writeln(chalk.white.bold('Context: ') + chalk.cyan(item.context));
           data.grunt.log.writeln(chalk.white.bold('Selector: ') + chalk.blue(item.selector));
