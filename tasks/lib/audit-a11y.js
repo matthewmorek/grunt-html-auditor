@@ -91,10 +91,10 @@ module.exports = function (data, done) {
       data.grunt.log.writeln('');
 
       if (count.errors > 0) {
-        data.grunt.log.error(chalk.red.bold('Accessibility checks failed.'));
+        data.grunt.log.error(chalk.red.bold('Your page conains some accessibility issues.'));
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('Accessibility tests passed successfully.'));
+      data.grunt.log.ok(chalk.green.bold('You page appears to have no accessibility issues.'));
     }
 
     done(null, data);
