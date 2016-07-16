@@ -39,7 +39,6 @@ module.exports = function (data, done) {
 
   data.grunt.log.writeln('');
   data.grunt.log.writeln(chalk.yellow.bold('> Checking for page accessibility issues...'));
-  data.grunt.log.writeln(indent + chalk.dim('File: ' + data.file.file));
   data.grunt.log.writeln('');
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
@@ -51,47 +50,50 @@ module.exports = function (data, done) {
     }
 
     var rawData = processResult(result);
-    var messages = JSON.parse(rawData.pop())['assessibility'][data.file.file];
+    var results = JSON.parse(rawData.pop())['assessibility'];
 
-    if (messages.length > 0) {
-      var count = {
-        errors: 0,
-        warnings: 0,
-        notices: 0,
-      };
-      var total = messages.length;
+    if (Object.keys(results).length > 0) {
+      var messages = results[data.file.file];
+      if (Object.keys(messages).length > 0) {
+        var count = {
+          errors: 0,
+          warnings: 0,
+          notices: 0,
+        };
+        var total = messages.length;
 
-      forEach(messages, function (index, item) {
-        var i = index + 1;
-        switch (item.type) {
-          case 'error':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.red.bold('[Error] ') + item.message));
-            count.errors++;
-            break;
-          case 'warning':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.yellow.bold('[Warning] ') + item.message));
-            count.warnings++;
-            break;
-          case 'notice':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.dim.bold('[Notice] ') + item.message));
-            count.notices++;
-            break;
-        }
-        if (!data.options.summary) {
-          data.grunt.log.writeln(chalk.white.bold('Code: ') + item.code);
-          data.grunt.log.writeln(chalk.white.bold('Context: ') + chalk.cyan(item.context));
-          data.grunt.log.writeln(chalk.white.bold('Selector: ') + chalk.blue(item.selector));
-        }
+        forEach(messages, function (index, item) {
+          var i = index + 1;
+          switch (item.type) {
+            case 'error':
+              data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
+              count.errors++;
+              break;
+            case 'warning':
+              data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
+              count.warnings++;
+              break;
+            case 'notice':
+              data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
+              count.notices++;
+              break;
+          }
+          if (!data.options.summary) {
+            data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+            data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+            data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+          }
+          data.grunt.log.writeln('');
+        });
+
+        data.grunt.log.write(indent + chalk.red('Errors: ' + count.errors + '; '));
+        data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
+        data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
         data.grunt.log.writeln('');
-      });
 
-      data.grunt.log.write(chalk.red('Errors: ' + count.errors + '; '));
-      data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
-      data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
-      data.grunt.log.writeln('');
-
-      if (count.errors > 0) {
-        data.grunt.log.error(chalk.red.bold('Your page conains some accessibility issues.'));
+        if (count.errors > 0) {
+          data.grunt.log.error(chalk.red.bold('Your page conains some accessibility issues.'));
+        }
       }
     } else {
       data.grunt.log.ok(chalk.green.bold('You page appears to have no accessibility issues.'));
