@@ -39,7 +39,6 @@ module.exports = function (data, done) {
 
   data.grunt.log.writeln('');
   data.grunt.log.writeln(chalk.yellow.bold('> Validating your HTML5 markup...'));
-  data.grunt.log.writeln(indent + chalk.dim('File: ' + data.file.file));
   data.grunt.log.writeln('');
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
@@ -51,50 +50,54 @@ module.exports = function (data, done) {
     }
 
     var rawData = processResult(result);
-    var messages = JSON.parse(rawData.pop())['html5'][data.file.file];
+    var results = JSON.parse(rawData.pop())['html5'];
 
-    if (messages.length > 0) {
-      var count = {
-        errors: 0,
-        warnings: 0,
-        notices: 0,
-      };
+    if (Object.keys(results).length > 0) {
+      var messages = results[data.file.file];
+      if (Object.keys(messages).length > 0) {
+        var count = {
+          errors: 0,
+          warnings: 0,
+          notices: 0,
+        };
+        var total = messages.length;
 
-      var total = messages.length;
+        forEach(messages, function (index, item) {
+          var i = index + 1;
+          switch (item.type) {
+            case 'error':
+              data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
+              count.errors++;
+              break;
+            case 'warning':
+              data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
+              count.warnings++;
+              break;
+            case 'notice':
+              data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
+              count.notices++;
+              break;
+          }
 
-      forEach(messages, function (index, item) {
-        var i = index + 1;
-        switch (item.type) {
-          case 'error':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.red.bold('[Error] ') + item.message));
-            count.errors++;
-            break;
-          case 'warning':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.yellow.bold('[Warning] ') + item.message));
-            count.warnings++;
-            break;
-          case 'notice':
-            data.grunt.log.writeln(data.grunt.log.wraptext(80, chalk.dim.bold('[Notice] ') + item.message));
-            count.notices++;
-            break;
-        }
-        if (!data.options.summary) {
-          data.grunt.log.writeln(chalk.white.bold('Line: ') + item.lastLine);
-          data.grunt.log.writeln(chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
-        }
+          if (!data.options.summary) {
+            data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
+            data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
+          }
+
+          data.grunt.log.writeln('');
+        });
+
+        data.grunt.log.write(indent + chalk.red('Errors: ' + count.errors + '; '));
+        data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
+        data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
         data.grunt.log.writeln('');
-      });
 
-      data.grunt.log.write(chalk.red('Errors: ' + count.errors + '; '));
-      data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
-      data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
-      data.grunt.log.writeln('');
-
-      if (count.errors > 0) {
-        data.grunt.log.error(chalk.red.bold('Your HTML5 markup contains some validation errors.'));
+        if (count.errors > 0) {
+          data.grunt.log.error(chalk.red.bold('Your HTML5 markup contains some validation errors.'));
+        }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('Your HTML5 markup is 100% valid.'));
+      data.grunt.log.ok(chalk.green.bold('Your HTML5 markup appears 100% valid.'));
     }
 
     done(null, data);
