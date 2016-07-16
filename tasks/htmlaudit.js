@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         },
         require('./lib/audit-a11y'),
         require('./lib/audit-html5'),
-        // require('./lib/audit-link'),
+        require('./lib/audit-link'),
       ], function (err, data) {
 
         logger('Done with file: ' + data.file.filename);
