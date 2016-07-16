@@ -32,7 +32,7 @@ module.exports = function (data, done) {
 
   var indent = '  ';
 
-  if (!data.options.tests.a11y) {
+  if (!data.options.tests.html5) {
     done(null, data);
     return;
   }
