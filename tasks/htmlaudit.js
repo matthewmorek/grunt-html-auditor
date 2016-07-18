@@ -22,8 +22,14 @@ module.exports = function(grunt) {
     var allDone = this.async();
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      tests: ['a11y', 'html5', 'link'],
-      summary: true,
+      tests: {
+        a11y: true,
+        html5: true,
+        link: {
+          baseUri: 'http://www.acme.com'
+        }
+      },
+      summary: false,
       debug: false
     });
 
