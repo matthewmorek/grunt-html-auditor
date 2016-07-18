@@ -39,11 +39,11 @@ module.exports = function (data, done) {
 
   data.grunt.log.writeln('');
   data.grunt.log.writeln(chalk.yellow.bold('> Validating links...'));
-  data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.tests.link.baseUri));
+  data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.baseUri));
   data.grunt.log.writeln('');
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.tests.link.baseUri], function (error, result, code) {
+  execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.baseUri], function (error, result, code) {
     if (error) {
       data.logger(chalk.red(result));
       data.logger(chalk.red(code));

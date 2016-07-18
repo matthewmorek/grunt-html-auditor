@@ -38,10 +38,9 @@ module.exports = function(grunt) {
           tests: {
             a11y: true,
             html5: true,
-            link: {
-              baseUri: 'http://www.acme.com'
-            }
+            link: true
           },
+          baseUri: 'http://www.acme.com',
           summary: false,
           debug: false
         },
