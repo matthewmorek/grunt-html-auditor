@@ -90,13 +90,14 @@ grunt.initConfig({
 ```
 
 #### Custom Options
-In this example, custom options are used to run just accessibility tests on a single HTML file. As with using default options, the plugin will never alter any of your files.
+In this example, custom options are used to run **only** accessibility tests, on a single HTML file. As with using default options, the plugin will never alter any of your files.
 
 ```js
 grunt.initConfig({
   htmlaudit: {
     options: {
       tests: {
+        a11y: true,
         html5: false,
         link: false
       }
