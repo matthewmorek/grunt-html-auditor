@@ -3,28 +3,26 @@
 > Grunt plugin for node-html-auditor.
 
 ## Getting Started
-This plugin requires Grunt `~0.4.5`
+This plugin requires Grunt `~1.0.1`
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
-
+Install this plugin with this command:
 ```shell
 npm install grunt-html-auditor --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
-
 ```js
 grunt.loadNpmTasks('grunt-html-auditor');
 ```
 
-## The "html_auditor" task
+## The "htmlaudit" task
 
 ### Overview
-In your project's Gruntfile, add a section named `html_auditor` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `htmlaudit` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  html_auditor: {
+  htmlaudit: {
     options: {
       // Task-specific options go here.
     },
@@ -37,47 +35,64 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.tests
+Type: `Object`  
+Default value:
+```
+{
+  a11y: true,
+  html5: true,
+  link: true
+}
+```
+
+An Object that is used to toggle which tests should be run upon execution.
+
+#### options.baseUri
 Type: `String`
-Default value: `',  '`
+Default value: `'http://www.acme.com''`
 
-A string value that is used to do something with whatever.
+A URL that is used to serve as a basis for testing links.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.summary
+Type: `Boolean`
+Default value: `false`
 
-A string value that is used to do something else with whatever else.
+If set to `true`, the plugin will only display a summary of all `a11y` issues, and not full debug info.
+
+#### options.debug
+Type: `Boolean`
+Default value: `false`
+
+If set to `true`, the plugin will display additional plugin-related debug information.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+In this example, the default options are used to run all available tests (`a11y`, `html5`, `link`). The plugin does not make any alterations to your files, it simply reads their contents and runs all tests using `node-html-auditor` binary.
 
 ```js
 grunt.initConfig({
-  html_auditor: {
+  htmlaudit: {
     options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    src: 'path/to/your/file(s)/*.html'
   },
 });
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, custom options are used to run just accessibility tests on a single HTML file. As with using default options, the plugin will never alter any of your files.
 
 ```js
 grunt.initConfig({
-  html_auditor: {
+  htmlaudit: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      tests: {
+        html5: false,
+        link: false
+      }
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    src: 'path/to/your/file.html',
   },
 });
 ```
