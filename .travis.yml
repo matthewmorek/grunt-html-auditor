@@ -3,6 +3,14 @@ node_js:
   - "6.3.0"
   - "5.12"
   - "4.4.7"
+env:
+  - CXX=g++-5.1
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-5.1
 before_install:
   - npm set progress=false
   # - export PATH=$(python -c 'from sys import argv;from collections import OrderedDict as od;print(":".join(od((p,None) for p in argv[1].split(":") if p.startswith("/")).keys()))' "$PATH")
