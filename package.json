@@ -1,26 +1,18 @@
 {
   "name": "grunt-html-auditor",
-  "description": "Grunt plugin for node-html-auditor.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/mmorek/grunt-html-auditor",
+  "description": "Grunt plugin for `node-html-auditor` package.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/matthewmorek/grunt-html-auditor",
   "author": {
     "name": "Matthew Morek",
     "email": "me@matthewmorek.com",
     "url": "matthewmorek.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mmorek/grunt-html-auditor.git"
-  },
+  "repository": "matthewmorek/grunt-html-auditor",
   "bugs": {
-    "url": "https://github.com/mmorek/grunt-html-auditor/issues"
+    "url": "https://github.com/matthewmorek/grunt-html-auditor/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/mmorek/grunt-html-auditor/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "engines": {
     "node": ">=4.4"
   },
@@ -37,7 +29,12 @@
     "grunt": "~1.0.1"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "accessibility",
+    "html5",
+    "validation",
+    "markup",
+    "links"
   ],
   "dependencies": {
     "html-auditor": "~0.15.0"
