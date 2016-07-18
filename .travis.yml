@@ -4,18 +4,16 @@ node_js:
   - "5.12"
   - "4.4.7"
 env:
-  - CXX=g++-5.1
+  - CXX=g++-4.9
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-5.1
+      - g++-4.9
 before_install:
   - npm set progress=false
-  # - export PATH=$(python -c 'from sys import argv;from collections import OrderedDict as od;print(":".join(od((p,None) for p in argv[1].split(":") if p.startswith("/")).keys()))' "$PATH")
 install: npm install
 before_script:
-  # - node_modules/.bin/grunt --version
   - node_modules/.bin/grunt test
 script: echo "Done!"
