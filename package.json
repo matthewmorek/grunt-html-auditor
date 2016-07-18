@@ -37,6 +37,8 @@
     "links"
   ],
   "dependencies": {
+    "async": "~2.0.0",
+    "chalk": "~1.1.3",
     "html-auditor": "~0.15.0"
   }
 }
