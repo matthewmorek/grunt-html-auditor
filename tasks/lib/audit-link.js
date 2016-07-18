@@ -44,6 +44,8 @@ module.exports = function (data, done) {
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.baseUri], function (error, result, code) {
+    data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.file + ' --base-uri ' + data.options.baseUri));
+
     if (error) {
       data.logger(chalk.red(result));
       data.logger(chalk.red(code));
@@ -52,14 +54,13 @@ module.exports = function (data, done) {
 
     var rawData = processResult(result);
     var results = JSON.parse(rawData.pop())['link'];
+    data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
       var messages = results[data.file.file];
       if (Object.keys(messages).length > 0) {
         var count = {
-          errors: 0,
-          warnings: 0,
-          notices: 0,
+          errors: 0
         };
 
         var total = messages.length;

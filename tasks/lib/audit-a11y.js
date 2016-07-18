@@ -51,6 +51,7 @@ module.exports = function (data, done) {
 
     var rawData = processResult(result);
     var results = JSON.parse(rawData.pop())['assessibility'];
+    data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
       var messages = results[data.file.file];
@@ -67,28 +68,45 @@ module.exports = function (data, done) {
           switch (item.type) {
             case 'error':
               data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
+              if (data.options.showDetails) {
+                data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+                data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+                data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+              }
+              data.grunt.log.writeln('');
               count.errors++;
               break;
             case 'warning':
               data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
+              if (data.options.showDetails) {
+                data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+                data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+                data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+              }
+              data.grunt.log.writeln('');
               count.warnings++;
               break;
             case 'notice':
-              data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
-              count.notices++;
+              if (data.options.showNotices) {
+                data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
+                if (data.options.showDetails) {
+                  data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+                  data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+                  data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+                }
+                data.grunt.log.writeln('');
+                count.notices++;
+              }
               break;
           }
-          if (!data.options.summary) {
-            data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
-            data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
-            data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
-          }
-          data.grunt.log.writeln('');
         });
 
         data.grunt.log.write(indent + chalk.red('Errors: ' + count.errors + '; '));
         data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
-        data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
+        if (data.options.showNotices) {
+          data.grunt.log.write(chalk.dim('Notices: ' + count.notices + '; '));
+        }
+        data.grunt.log.writeln('');
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {

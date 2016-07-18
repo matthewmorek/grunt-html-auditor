@@ -28,7 +28,8 @@ module.exports = function(grunt) {
         link: true
       },
       baseUri: 'http://www.acme.com',
-      summary: false,
+      showDetails: true,
+      showNotices: false,
       debug: false
     });
 
