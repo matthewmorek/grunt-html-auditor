@@ -39,6 +39,7 @@ module.exports = function (data, done) {
 
   data.grunt.log.writeln('');
   data.grunt.log.writeln(chalk.yellow.bold('> Validating links...'));
+  data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.tests.link.baseUri));
   data.grunt.log.writeln('');
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
