@@ -1,6 +1,9 @@
 # grunt-html-auditor
 
-> Grunt plugin for node-html-auditor.
+> Grunt plugin for [node-html-auditor](github.com/wfp/node-html-auditor).
+
+[![npm](https://img.shields.io/npm/v/grunt-html-auditor.svg?maxAge=2592000?style=flat-square)](https://github.com/matthewmorek/grunt-html-auditor/releases/tag/v1.0.0)
+[![Travis branch](https://img.shields.io/travis/matthewmorek/grunt-html-auditor/v1.0.0.svg?maxAge=2592000?style=flat-square)](github.com/matthewmorek/grunt-html-auditor)
 
 ## Getting Started
 This plugin requires Grunt `~1.0.1`
@@ -36,7 +39,7 @@ grunt.initConfig({
 ### Options
 
 #### options.tests
-Type: `Object`  
+Type: `Object`
 Default value:
 ```
 {
@@ -54,11 +57,17 @@ Default value: `'http://www.acme.com''`
 
 A URL that is used to serve as a basis for testing links.
 
-#### options.summary
+#### options.showDetails
 Type: `Boolean`
-Default value: `false`
+Default value: `true`
 
-If set to `true`, the plugin will only display a summary of all `a11y` issues, and not full debug info.
+If set to `false`, the plugin will only display a summary of all `a11y` and `html5` issues, and not full debug info.
+
+#### options.showNotices
+Type: `Boolean`
+Default value: `true`
+
+If set to `false`, the plugin will only display `error` and `warning` issue, but not `notice` or `info`.
 
 #### options.debug
 Type: `Boolean`
