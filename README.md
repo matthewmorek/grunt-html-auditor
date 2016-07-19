@@ -1,8 +1,8 @@
 # grunt-html-auditor
 
-> Grunt plugin for [node-html-auditor](github.com/wfp/node-html-auditor).
+> Grunt plugin for [node-html-auditor](https://github.com/wfp/node-html-auditor).
 
-[![npm](https://img.shields.io/npm/v/grunt-html-auditor.svg?maxAge=2592000?style=flat-square)](https://github.com/matthewmorek/grunt-html-auditor/releases/tag/v1.0.0)
+[![npm](https://img.shields.io/npm/v/grunt-html-auditor.svg?maxAge=2592000?style=flat-square)](https://github.com/matthewmorek/grunt-html-auditor/releases/tag/v1.1.0)
 [![Travis branch](https://img.shields.io/travis/matthewmorek/grunt-html-auditor/v1.0.0.svg?maxAge=2592000?style=flat-square)](github.com/matthewmorek/grunt-html-auditor)
 
 ## Getting Started
