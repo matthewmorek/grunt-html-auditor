@@ -6,7 +6,7 @@
 [![Travis branch](https://img.shields.io/travis/matthewmorek/grunt-html-auditor/v1.0.0.svg?maxAge=2592000?style=flat-square)](github.com/matthewmorek/grunt-html-auditor)
 
 ## Getting Started
-This plugin requires Grunt `~1.0.1`
+This plugin requires Grunt `~0.4.5`
 
 Install this plugin with this command:
 ```shell
@@ -68,6 +68,12 @@ Type: `Boolean`
 Default value: `true`
 
 If set to `false`, the plugin will only display `error` and `warning` issue, but not `notice` or `info`.
+
+#### options.showSummaryOnly
+Type: `Boolean`
+Default value: `false`
+
+If set to `true`, the plugin will override other display settings and show only a summary of all individual tests along with issue counts.
 
 #### options.debug
 Type: `Boolean`
