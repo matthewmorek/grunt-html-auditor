@@ -100,7 +100,8 @@ grunt.initConfig({
         a11y: true,
         html5: false,
         link: false
-      }
+      },
+      showNotices: false
     },
     src: 'path/to/your/file.html',
   },

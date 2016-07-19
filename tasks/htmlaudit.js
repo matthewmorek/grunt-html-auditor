@@ -29,7 +29,7 @@ module.exports = function(grunt) {
       },
       baseUri: 'http://www.acme.com',
       showDetails: true,
-      showNotices: false,
+      showNotices: true,
       debug: false
     });
 
