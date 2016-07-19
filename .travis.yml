@@ -12,7 +12,8 @@ addons:
       - g++-4.9
 before_install:
   - npm set progress=false
+  - npm install -g grunt-cli
 install: npm install
 before_script:
-  - node_modules/.bin/grunt test
+  - grunt test
 script: echo "Done!"
