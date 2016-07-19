@@ -40,7 +40,9 @@ module.exports = function (data, done) {
   data.grunt.log.writeln('');
   data.grunt.log.writeln(chalk.yellow.bold('> Validating links...'));
   data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.baseUri));
-  data.grunt.log.writeln('');
+  if (!data.options.showSummaryOnly) {
+    data.grunt.log.writeln('');
+  }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.baseUri], function (error, result, code) {
@@ -67,13 +69,14 @@ module.exports = function (data, done) {
 
         forEach(messages, function (index, item) {
           var i = index + 1;
-
-          data.grunt.log.writeln(indent + chalk.red.bold(item.error));
-          data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.html));
-          data.grunt.log.writeln(indent + chalk.white.bold('URL: ') + chalk.cyan(item.url.original));
-          data.grunt.log.writeln(indent + chalk.white.bold('Resolved: ') + chalk.cyan(item.url.resolved));
-          data.grunt.log.writeln(indent + chalk.white.bold('Redirected: ') + chalk.cyan(item.url.redirected));
-          data.grunt.log.writeln('');
+          if (!data.options.showSummaryOnly) {
+            data.grunt.log.writeln(indent + chalk.red.bold(item.error));
+            data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.html));
+            data.grunt.log.writeln(indent + chalk.white.bold('URL: ') + chalk.cyan(item.url.original));
+            data.grunt.log.writeln(indent + chalk.white.bold('Resolved: ') + chalk.cyan(item.url.resolved));
+            data.grunt.log.writeln(indent + chalk.white.bold('Redirected: ') + chalk.cyan(item.url.redirected));
+            data.grunt.log.writeln('');
+          }
           count.errors++;
         });
 
@@ -81,11 +84,12 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Your markup contains some invalid URLs.'));
+          data.grunt.log.error(chalk.red.bold('Markup contains ' + count.errors + ' invalid URL(s).'));
         }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('Your links appear to be 100% valid.'));
+      data.grunt.log.writeln('');
+      data.grunt.log.ok(chalk.green.bold('Links appear to be 100% valid.'));
     }
 
     done(null, data);

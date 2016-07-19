@@ -43,6 +43,7 @@ module.exports = function(grunt) {
           baseUri: 'http://www.acme.com',
           showDetails: false,
           showNotices: false,
+          showSummaryOnly: true,
           debug: false
         },
         src: 'test/fixtures/*.html'

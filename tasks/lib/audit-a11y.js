@@ -37,9 +37,11 @@ module.exports = function (data, done) {
     return;
   }
 
-  data.grunt.log.writeln('');
-  data.grunt.log.writeln(chalk.yellow.bold('> Checking for page accessibility issues...'));
-  data.grunt.log.writeln('');
+  data.grunt.log.writeln(chalk.dim('------------'));
+  data.grunt.log.writeln(chalk.yellow.bold('> Checking page against WCAG2 guidelines...'));
+  if (!data.options.showSummaryOnly) {
+    data.grunt.log.writeln('');
+  }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile(bin, ['a11y', '--path', data.file.file], function (error, result, code) {
@@ -67,27 +69,31 @@ module.exports = function (data, done) {
           var i = index + 1;
           switch (item.type) {
             case 'error':
-              data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
-              if (data.options.showDetails) {
-                data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
-                data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
-                data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+              if (!data.options.showSummaryOnly) {
+                data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
+                if (data.options.showDetails) {
+                  data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+                  data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+                  data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+                }
+                data.grunt.log.writeln('');
               }
-              data.grunt.log.writeln('');
               count.errors++;
               break;
             case 'warning':
-              data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
-              if (data.options.showDetails) {
-                data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
-                data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
-                data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+              if (!data.options.showSummaryOnly) {
+                data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
+                if (data.options.showDetails) {
+                  data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
+                  data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
+                  data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
+                }
+                data.grunt.log.writeln('');
               }
-              data.grunt.log.writeln('');
               count.warnings++;
               break;
             case 'notice':
-              if (data.options.showNotices) {
+              if (!data.options.showSummaryOnly && data.options.showNotices) {
                 data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
                 if (data.options.showDetails) {
                   data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
@@ -95,26 +101,23 @@ module.exports = function (data, done) {
                   data.grunt.log.writeln(indent + chalk.white.bold('Selector: ') + chalk.blue(item.selector));
                 }
                 data.grunt.log.writeln('');
-                count.notices++;
               }
+              count.notices++;
               break;
           }
         });
 
         data.grunt.log.write(indent + chalk.red('Errors: ' + count.errors + '; '));
         data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
-        if (data.options.showNotices) {
-          data.grunt.log.write(chalk.dim('Notices: ' + count.notices + '; '));
-        }
-        data.grunt.log.writeln('');
+        data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Your page conains some accessibility issues.'));
+          data.grunt.log.error(chalk.red.bold('Page conains ' + count.errors + ' major accessibility issue(s).'));
         }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('You page appears to have no accessibility issues.'));
+      data.grunt.log.ok(chalk.green.bold('Page appears to have no accessibility issues.'));
     }
 
     done(null, data);

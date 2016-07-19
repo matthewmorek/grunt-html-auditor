@@ -30,6 +30,7 @@ module.exports = function(grunt) {
       baseUri: 'http://www.acme.com',
       showDetails: true,
       showNotices: true,
+      showSummaryOnly: false,
       debug: false
     });
 
@@ -67,7 +68,7 @@ module.exports = function(grunt) {
     async.eachSeries(files, function (file, fileDone) {
       async.waterfall([
         function init(done) {
-          logger(chalk.yellow('Processing file: ' + file.filename));
+          grunt.log.writeln(chalk.cyan.bold('> Processing file: ' + file.filename));
 
           var data = {
             options: options,

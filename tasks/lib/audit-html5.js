@@ -38,8 +38,10 @@ module.exports = function (data, done) {
   }
 
   data.grunt.log.writeln('');
-  data.grunt.log.writeln(chalk.yellow.bold('> Validating your HTML5 markup...'));
-  data.grunt.log.writeln('');
+  data.grunt.log.writeln(chalk.yellow.bold('> Validating HTML5 markup...'));
+  if (!data.options.showSummaryOnly) {
+    data.grunt.log.writeln('');
+  }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile(bin, ['html5', '--path', data.file.file], function (error, result, code) {
@@ -67,51 +69,54 @@ module.exports = function (data, done) {
           var i = index + 1;
           switch (item.type) {
             case 'error':
-              data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
-              if (data.options.showDetails) {
-                data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
-                data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
+              if (!data.options.showSummaryOnly) {
+                data.grunt.log.writeln(indent + chalk.red.bold('Error: ') + item.message);
+                if (data.options.showDetails) {
+                  data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
+                  data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
+                }
+                data.grunt.log.writeln('');
               }
-              data.grunt.log.writeln('');
               count.errors++;
               break;
             case 'warning':
-              data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
-              if (data.options.showDetails) {
-                data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
-                data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
+              if (!data.option.showSummaryOnly) {
+                data.grunt.log.writeln(indent + chalk.yellow.bold('Warning: ') + item.message);
+                if (data.options.showDetails) {
+                  data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
+                  data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
+                }
+                data.grunt.log.writeln('');
               }
-              data.grunt.log.writeln('');
               count.warnings++;
               break;
             case 'info':
-              if (data.options.showNotices) {
+              if (!data.options.showSummaryOnly && data.options.showNotices) {
                 data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
                 if (data.options.showDetails) {
                   data.grunt.log.writeln(indent + chalk.white.bold('Line: ') + item.lastLine);
                   data.grunt.log.writeln(indent + chalk.white.bold('Extract: ') + chalk.cyan(item.extract));
                 }
                 data.grunt.log.writeln('');
-                count.notices++;
               }
+              count.notices++;
               break;
           }
         });
 
         data.grunt.log.write(indent + chalk.red('Errors: ' + count.errors + '; '));
         data.grunt.log.write(chalk.yellow('Warnings: ' + count.warnings + '; '));
-        if (data.options.showNotices) {
-          data.grunt.log.write(chalk.dim('Notices: ' + count.notices + '; '));
-        }
-        data.grunt.log.writeln('');
+        data.grunt.log.writeln(chalk.dim('Notices: ' + count.notices + '; '));
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Your HTML5 markup contains some validation errors.'));
+          data.grunt.log.error(chalk.red.bold('HTML5 markup contains ' + count.errors + ' validation error(s).'));
+        } else {
+          data.grunt.log.ok(chalk.green.bold('HTML5 markup appears valid, with ' + count.notices + ' notice(s).'));
         }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('Your HTML5 markup appears 100% valid.'));
+      data.grunt.log.ok(chalk.green.bold('HTML5 markup appears 100% valid.'));
     }
 
     done(null, data);
