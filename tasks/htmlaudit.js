@@ -68,7 +68,7 @@ module.exports = function(grunt) {
     async.eachSeries(files, function (file, fileDone) {
       async.waterfall([
         function init(done) {
-          grunt.log.writeln(chalk.cyan.bold('> Processing file: ' + file.filename));
+          grunt.log.writeln(chalk.white.bold('> Processing file: ' + file.file));
 
           var data = {
             options: options,

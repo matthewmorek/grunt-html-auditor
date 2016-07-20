@@ -38,19 +38,18 @@ module.exports = function (data, done) {
   }
 
   data.grunt.log.writeln('');
-  data.grunt.log.writeln(chalk.yellow.bold('> Validating links...'));
+  data.grunt.log.writeln(chalk.white.bold('> Validating links...'));
   data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.baseUri));
   if (!data.options.showSummaryOnly) {
     data.grunt.log.writeln('');
   }
 
-  var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.baseUri], function (error, result, code) {
-    data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.file + ' --base-uri ' + data.options.baseUri));
-
+  execFile('html-audit', ['link', '--path', data.file.src, '--base-uri', data.options.baseUri], function (error, result, code) {
     if (error) {
-      data.logger(chalk.red(result));
-      data.logger(chalk.red(code));
+      data.logger(chalk.yellow('html-audit link --path ' + data.file.src + ' --base-uri ' + data.options.baseUri));
+      data.grunt.log.writeln(chalk.red(error));
+      data.grunt.log.writeln(chalk.red(result));
+      data.grunt.log.writeln(chalk.red(code));
       data.grunt.fail.fatal(result, 1);
     }
 
@@ -59,7 +58,7 @@ module.exports = function (data, done) {
     data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
-      var messages = results[data.file.file];
+      var messages = results[data.file.src];
       if (Object.keys(messages).length > 0) {
         var count = {
           errors: 0
@@ -84,12 +83,12 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Markup contains ' + count.errors + ' invalid URL(s).'));
+          data.grunt.log.error(chalk.white.bold('Markup contains ' + count.errors + ' invalid URL(s).'));
         }
       }
     } else {
       data.grunt.log.writeln('');
-      data.grunt.log.ok(chalk.green.bold('Links appear to be 100% valid.'));
+      data.grunt.log.ok(chalk.white.bold('Links appear to be 100% valid.'));
     }
 
     done(null, data);

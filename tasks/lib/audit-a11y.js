@@ -37,17 +37,19 @@ module.exports = function (data, done) {
     return;
   }
 
-  data.grunt.log.writeln(chalk.dim('------------'));
-  data.grunt.log.writeln(chalk.yellow.bold('> Checking page against WCAG2 guidelines...'));
+  data.grunt.log.writeln('');
+  data.grunt.log.writeln(chalk.white.bold('> Checking page against WCAG2 guidelines...'));
+
   if (!data.options.showSummaryOnly) {
     data.grunt.log.writeln('');
   }
 
-  var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['a11y', '--path', data.file.file], function (error, result, code) {
+  execFile('html-audit', ['a11y', '--path', data.file.src], function (error, result, code) {
     if (error) {
-      data.logger(chalk.red(result));
-      data.logger(chalk.red(code));
+      data.grunt.log.writeln('Running: html-auditor a11y --path ' + data.file.src);
+      data.grunt.log.writeln(chalk.red(error));
+      data.grunt.log.writeln(chalk.red(result));
+      data.grunt.log.writeln(chalk.red(code));
       data.grunt.fail.fatal(result, 1);
     }
 
@@ -56,7 +58,7 @@ module.exports = function (data, done) {
     data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
-      var messages = results[data.file.file];
+      var messages = results[data.file.src];
       if (Object.keys(messages).length > 0) {
         var count = {
           errors: 0,
@@ -94,7 +96,7 @@ module.exports = function (data, done) {
               break;
             case 'notice':
               if (!data.options.showSummaryOnly && data.options.showNotices) {
-                data.grunt.log.writeln(indent + chalk.dim.bold('Notice: ') + item.message);
+                data.grunt.log.writeln(indent + chalk.white.bold('Notice: ') + item.message);
                 if (data.options.showDetails) {
                   data.grunt.log.writeln(indent + chalk.white.bold('Code: ') + item.code);
                   data.grunt.log.writeln(indent + chalk.white.bold('Context: ') + chalk.cyan(item.context));
@@ -113,11 +115,11 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Page conains ' + count.errors + ' major accessibility issue(s).'));
+          data.grunt.log.error(chalk.white.bold('Page contains ' + count.errors + ' major accessibility issue(s).'));
         }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('Page appears to have no accessibility issues.'));
+      data.grunt.log.ok(chalk.white.bold('Page appears to have no accessibility issues.'));
     }
 
     done(null, data);
