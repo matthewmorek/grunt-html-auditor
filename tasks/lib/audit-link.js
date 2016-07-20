@@ -45,8 +45,8 @@ module.exports = function (data, done) {
   }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['link', '--path', data.file.file, '--base-uri', data.options.baseUri], function (error, result, code) {
-    data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.file + ' --base-uri ' + data.options.baseUri));
+  execFile(bin, ['link', '--path', data.file.src, '--base-uri', data.options.baseUri], function (error, result, code) {
+    data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.src + ' --base-uri ' + data.options.baseUri));
 
     if (error) {
       data.grunt.log.writeln(chalk.red(error));
@@ -60,7 +60,7 @@ module.exports = function (data, done) {
     data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
-      var messages = results[data.file.file];
+      var messages = results[data.file.src];
       if (Object.keys(messages).length > 0) {
         var count = {
           errors: 0

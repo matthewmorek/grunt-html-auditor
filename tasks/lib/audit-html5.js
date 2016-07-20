@@ -44,7 +44,7 @@ module.exports = function (data, done) {
   }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['html5', '--path', data.file.file], function (error, result, code) {
+  execFile(bin, ['html5', '--path', data.file.src], function (error, result, code) {
     if (error) {
       data.grunt.log.writeln(chalk.red(error));
       data.grunt.log.writeln(chalk.red(result));
@@ -57,7 +57,7 @@ module.exports = function (data, done) {
     data.logger(chalk.yellow(JSON.stringify(results)));
 
     if (Object.keys(results).length > 0) {
-      var messages = results[data.file.file];
+      var messages = results[data.file.src];
       if (Object.keys(messages).length > 0) {
         var count = {
           errors: 0,
