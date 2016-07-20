@@ -44,11 +44,9 @@ module.exports = function (data, done) {
     data.grunt.log.writeln('');
   }
 
-  var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile('html-audit', ['link', '--path', data.file.src, '--base-uri', data.options.baseUri], function (error, result, code) {
-    data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.src + ' --base-uri ' + data.options.baseUri));
-
     if (error) {
+      data.logger(chalk.yellow('html-audit link --path ' + data.file.src + ' --base-uri ' + data.options.baseUri));
       data.grunt.log.writeln(chalk.red(error));
       data.grunt.log.writeln(chalk.red(result));
       data.grunt.log.writeln(chalk.red(code));
@@ -85,12 +83,12 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('Markup contains ' + count.errors + ' invalid URL(s).'));
+          data.grunt.log.error(chalk.white.bold('Markup contains ' + count.errors + ' invalid URL(s).'));
         }
       }
     } else {
       data.grunt.log.writeln('');
-      data.grunt.log.ok(chalk.green.bold('Links appear to be 100% valid.'));
+      data.grunt.log.ok(chalk.white.bold('Links appear to be 100% valid.'));
     }
 
     done(null, data);

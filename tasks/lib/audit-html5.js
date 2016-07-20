@@ -38,14 +38,14 @@ module.exports = function (data, done) {
   }
 
   data.grunt.log.writeln('');
-  data.grunt.log.writeln(chalk.yellow.bold('> Validating HTML5 markup...'));
+  data.grunt.log.writeln(chalk.white.bold('> Validating HTML5 markup...'));
   if (!data.options.showSummaryOnly) {
     data.grunt.log.writeln('');
   }
 
-  var bin = process.cwd() + '/node_modules/.bin/html-audit';
   execFile('html-audit', ['html5', '--path', data.file.src], function (error, result, code) {
     if (error) {
+      data.grunt.log.writeln('Running: html-auditor html5 --path ' + data.file.src);
       data.grunt.log.writeln(chalk.red(error));
       data.grunt.log.writeln(chalk.red(result));
       data.grunt.log.writeln(chalk.red(code));
@@ -111,13 +111,13 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.red.bold('HTML5 markup contains ' + count.errors + ' validation error(s).'));
+          data.grunt.log.error(chalk.white.bold('HTML5 markup contains ' + count.errors + ' validation error(s).'));
         } else {
-          data.grunt.log.ok(chalk.green.bold('HTML5 markup appears valid, with ' + count.notices + ' notice(s).'));
+          data.grunt.log.ok(chalk.white.bold('HTML5 markup appears valid, with ' + count.notices + ' notice(s).'));
         }
       }
     } else {
-      data.grunt.log.ok(chalk.green.bold('HTML5 markup appears 100% valid.'));
+      data.grunt.log.ok(chalk.white.bold('HTML5 markup appears 100% valid.'));
     }
 
     done(null, data);
