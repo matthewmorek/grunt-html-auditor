@@ -115,7 +115,7 @@ module.exports = function (data, done) {
         data.grunt.log.writeln('');
 
         if (count.errors > 0) {
-          data.grunt.log.error(chalk.white.bold('Page conains ' + count.errors + ' major accessibility issue(s).'));
+          data.grunt.log.error(chalk.white.bold('Page contains ' + count.errors + ' major accessibility issue(s).'));
         }
       }
     } else {
