@@ -38,7 +38,7 @@ module.exports = function (data, done) {
   }
 
   data.grunt.log.writeln('');
-  data.grunt.log.writeln(chalk.yellow.bold('> Validating links...'));
+  data.grunt.log.writeln(chalk.white.bold('> Validating links...'));
   data.grunt.log.writeln(chalk.dim(indent + 'Base URL: ' + data.options.baseUri));
   if (!data.options.showSummaryOnly) {
     data.grunt.log.writeln('');
