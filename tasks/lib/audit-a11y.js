@@ -47,6 +47,7 @@ module.exports = function (data, done) {
   execFile(bin, ['a11y', '--path', data.file.file], function (error, result, code) {
     if (error) {
       data.grunt.log.writeln('Running:' + bin + ' a11y --path ' + data.file.file);
+      data.grunt.log.writeln(chalk.red(error));
       data.grunt.log.writeln(chalk.red(result));
       data.grunt.log.writeln(chalk.red(code));
       data.grunt.fail.fatal(result, 1);
