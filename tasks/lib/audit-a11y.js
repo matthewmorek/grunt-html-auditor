@@ -44,7 +44,7 @@ module.exports = function (data, done) {
   }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['a11y', '--path', data.file.src], function (error, result, code) {
+  execFile('html-audit', ['a11y', '--path', data.file.src], function (error, result, code) {
     if (error) {
       data.grunt.log.writeln('Running:' + bin + ' a11y --path ' + data.file.src);
       data.grunt.log.writeln(chalk.red(error));

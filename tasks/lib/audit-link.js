@@ -45,7 +45,7 @@ module.exports = function (data, done) {
   }
 
   var bin = process.cwd() + '/node_modules/.bin/html-audit';
-  execFile(bin, ['link', '--path', data.file.src, '--base-uri', data.options.baseUri], function (error, result, code) {
+  execFile('html-audit', ['link', '--path', data.file.src, '--base-uri', data.options.baseUri], function (error, result, code) {
     data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.src + ' --base-uri ' + data.options.baseUri));
 
     if (error) {
