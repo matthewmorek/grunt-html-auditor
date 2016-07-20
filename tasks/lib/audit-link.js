@@ -49,8 +49,8 @@ module.exports = function (data, done) {
     data.logger(chalk.yellow(bin + ' link ' + '--path ' + data.file.file + ' --base-uri ' + data.options.baseUri));
 
     if (error) {
-      data.logger(chalk.red(result));
-      data.logger(chalk.red(code));
+      data.grunt.log.writeln(chalk.red(result));
+      data.grunt.log.writeln(chalk.red(code));
       data.grunt.fail.fatal(result, 1);
     }
 
